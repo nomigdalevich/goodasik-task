@@ -4,16 +4,20 @@
 
 ---
 
+
 ## 🖼️ תצוגת המערכת (Screenshots)
 
-| מסך כיתות | מסך תלמידים |
-| :---: | :---: |
-| ![Classes Page](./assets/classes-page.png) | ![Students Page](./assets/students-page.png) |
+### מסך כיתות
+![Classes Page](assets/classes-page.png)
 
-| דיאלוג טופס גנרי (Modal) | תוצאות בדיקות היחידה (Tests) |
-| :---: | :---: |
-| ![Modal Example](./assets/modal-example.png) | ![Test Results](./assets/test-pass.png) |
+### מסך תלמידים
+![Students Page](assets/students-page.png)
 
+### דיאלוג טופס גנרי (Modal)
+![Modal Example](assets/modal-example.png)
+
+### תוצאות בדיקות היחידה (Tests)
+![Test Results](assets/test-pass.png)
 ---
 
 
