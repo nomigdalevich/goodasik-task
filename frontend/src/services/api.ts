@@ -38,10 +38,10 @@ export const appApi = createApi({
 
     // -- תלמידים --
 
-    //קבלת כל התלמידים 
-    getAllStudents:
-    builder.query<StudentModel[] , void>({
-        query: () => '/students',
+    //קבלת תלמידים לפי כיתה מסוימת
+    getStudentsByClass:
+    builder.query<StudentModel[] , number >({
+        query: (classId) => `/classes/${classId}/students`,
         providesTags: ['Students']
     }),
 
@@ -95,7 +95,7 @@ export const {
   useCreateClassMutation,
   useUpdateClassMutation,
   useGetStudentsByFilterQuery,
-  useLazyGetAllStudentsQuery,
+  useGetStudentsByClassQuery,
   useCreateStudentMutation,
   useUpdateStudentMutation
 } = appApi;

@@ -35,8 +35,8 @@ async function bootstrap() {
 
 // יצירת אובייקט הגדרות לתיעוד ה-Swagger
   const config = new DocumentBuilder()
-    .setTitle('Task Management API') // הגדרת הכותרת הראשית שתוצג בתיעוד
-    .setDescription('REST API for Task Management System') // תיאור קצר של המערכת
+    .setTitle('School Management API') // הגדרת הכותרת הראשית שתוצג בתיעוד
+    .setDescription('REST API for School Classes & Students Management System') // תיאור קצר של המערכת
     .setVersion('1.0') // הגדרת גרסת ה-API
     .build(); // סיום בניית אובייקט התצורה
 
