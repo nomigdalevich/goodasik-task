@@ -3,9 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Input, Tag, Typography, Select, Form, message, Alert, Space } from 'antd';
 import { useCreateStudentMutation, useGetStudentsByFilterQuery, useUpdateStudentMutation } from '../services/api';
 import { GenericTable } from "../components/GenericTable";
-import type { StudentModel } from "../types/index";
+import type { StudentModel, UpdateStudentDto } from "../types/index";
 import { ArrowRightOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { GenericModel } from "../components/GenericModel";
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 const { Title } = Typography;
 
@@ -13,22 +14,19 @@ export const StudentsPage = () => {
 
     const { classId } = useParams<{ classId: string }>();
     const navigate = useNavigate();
-    const [form] = Form.useForm(); //יצירת אוביקט של טופס
+    const [form] = Form.useForm();
 
-    //משתני סטייט לסינון 
     const [search, setSearch] = useState('');
     const [status, setStatus] = useState<string | undefined>(undefined);
 
-    //שליפת נתונים לפי סינון
-    const { data: FilterStudents = [], isLoading , isError , refetch} = useGetStudentsByFilterQuery({
+    const { data: FilterStudents = [], isLoading, isError, refetch } = useGetStudentsByFilterQuery({
         classId: Number(classId),
         search: search || undefined,
         status: status || undefined,
     });
 
-    //במקרה של שגיאה
-    if(isError)
-        return(
+    if (isError)
+        return (
             <Alert
                 message='שגיאה בטעינת הנתונים'
                 description='לא ניתן היה לטעון את נתוני התלמידים מהשרת'
@@ -38,14 +36,13 @@ export const StudentsPage = () => {
                         size='small' type='primary' onClick={() => refetch()}
                     ></Button>
                 }
-                style={{margin: '20px 0'}}
+                style={{ margin: '20px 0' }}
             />
-    );
+        );
 
     const [addStudent, { isLoading: isAdding }] = useCreateStudentMutation();
     const [updateStudent, { isLoading: isUpdating }] = useUpdateStudentMutation();
 
-    //סטייט לניהול הדיאלוג
     const [isModelOpen, setIsModelOpen] = useState(false);
     const [editingStudent, setEidingStudent] = useState<StudentModel | null>(null);
 
@@ -70,8 +67,9 @@ export const StudentsPage = () => {
             dataIndex: 'status',
             key: 'status',
             render: (status: string) => {
-                const color = status === 'ACTIVE' ? 'green' : 'red';
-                const text = status === 'ACTIVE' ? 'פעיל' : 'לא פעיל';
+                const isActive = status === 'ACTIVE';
+                const color = isActive ? 'green' : 'red';
+                const text = isActive ? 'פעיל' : 'לא פעיל';
                 return <Tag color={color}>{text}</Tag>;
             },
         },
@@ -82,56 +80,67 @@ export const StudentsPage = () => {
                 <Button
                     type="link"
                     icon={<EditOutlined />}
-                    onClick={() => openToUpdate(record)} //מעבירים לפונקית העדכון את הרשומה שצריך לעדכן ואת ארוע הלחיצה
+                    onClick={() => openToUpdate(record)}
                 >
                     עריכה
                 </Button>
             )
         },
-    ]
+    ];
 
-    //פונקציות של הדיאלוג
-
-    //פונקציה לפתיחת הדיאלוג להוספת תלמיד חדש
     const openToCreate = () => {
-        setEidingStudent(null); //שמים בסטייט null שזה אומר אנחנו לא בעריכה של תלמיד קיים
-        form.resetFields(); //מנקים את כל התיבות טקסט
-        setIsModelOpen(true); //פתיחת הדיאלוג
+        setEidingStudent(null);
+        form.resetFields();
+        setIsModelOpen(true);
     };
 
-    //פונקציה לפתיחת הדיאלוג לעריכת תלמיד קיים 
     const openToUpdate = (record: StudentModel) => {
-        setEidingStudent(record);//שמירת התלמיד
-        form.setFieldsValue(record); //ממלאים את השדות שבטופס בנתוניפ הקיימים של התלמיד
-        setIsModelOpen(true); //פתיחת הדיאלוג
+        setEidingStudent(record);
+        form.setFieldsValue({
+            ...record,
+            status: record.status,
+        });
+        setIsModelOpen(true);
     };
 
-    //פונקציה לשמירה
     const submit = async () => {
         try {
             const values = await form.validateFields();
 
-            if (editingStudent)//אם אנחנו בעריכה
-            {
-                await updateStudent({ id: editingStudent.id, data: values }).unwrap();
+            if (editingStudent) {
+                const updateDto: UpdateStudentDto = {
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    parentPhone: values.parentPhone,
+                    status: values.status,
+                };
+
+                await updateStudent({ id: editingStudent.id, data: updateDto }).unwrap();
                 message.success('התלמיד עודכן בהצלחה !');
-            }
-            else //הוספה
-            {
-                const studentData = {
-                    ...values, classId: Number(classId)
-                }
-                await addStudent(studentData).unwrap();
+            } else {
+                const createDto = {
+                    ...values,
+                    classId: Number(classId),
+                };
+
+                await addStudent(createDto).unwrap();
                 message.success('התלמיד נוסף בהצלחה !');
             }
 
             setIsModelOpen(false);
             form.resetFields();
         }
+
         catch (error) {
-            console.error('Validation or Mutation failed:', error);
+            const err = error as FetchBaseQueryError;
+
+            const errorMessage =
+                (err.data as { message?: string })?.message||
+                'אירעה שגיאה בעת שמירת הנתונים';
+
+            message.error(errorMessage);
         }
-    }
+    };
 
     return (
         <>
@@ -141,7 +150,7 @@ export const StudentsPage = () => {
                         icon={<ArrowRightOutlined />} onClick={() => navigate('/classes')}
                     >חזרה לרשימת הכיתות</Button>
                 </div>
-                
+
                 <Title level={3}>תלמידי הכיתה</Title>
 
                 <GenericTable<StudentModel>
@@ -183,7 +192,6 @@ export const StudentsPage = () => {
                 />
             </div>
 
-            {/* שימוש בדיאלוג שיצרנו */}
             <GenericModel
                 isOpen={isModelOpen}
                 title={editingStudent ? 'עריכת תלמיד' : 'הוספת תלמיד חדש'}
@@ -227,15 +235,18 @@ export const StudentsPage = () => {
                     <Form.Item
                         name="status"
                         label='סטטוס'
-                        rules={[{ required: true, message: 'נא לבחור סטטוס' }]} >
-
+                        rules={[{ required: true, message: 'נא לבחור סטטוס' }]}
+                    >
                         <Select
-                            options={[{ value: 'ACTIVE', label: 'פעיל' },
-                            { value: 'INACTIVE', label: 'לא פעיל' },]} />
+                            options={[
+                                { value: 'ACTIVE', label: 'פעיל' },
+                                { value: 'INACTIVE', label: 'לא פעיל' },
+                            ]}
+                        />
                     </Form.Item>
 
                 </Form>
             </GenericModel>
         </>
-    )
-}
+    );
+};

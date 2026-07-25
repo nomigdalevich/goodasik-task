@@ -2,7 +2,6 @@ import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsEnum, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
 import { StudentStatus } from "../student.model";
 
-//פה מגדירים איך הלקוח מעדכן תלמיד במערכת
 export class UpdateStudentDto 
 {
   @ApiPropertyOptional({ example: 'ישראל', description: 'שם פרטי מעודכן' })

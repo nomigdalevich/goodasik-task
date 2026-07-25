@@ -4,23 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { GenericTable } from "../components/GenericTable";
 import type { ClassModel } from "../types/index";
 import React, { useState } from "react";
-import { EditOutlined, PlusOutlined } from '@ant-design/icons'; //ספריה של איקונים 
+import { EditOutlined, PlusOutlined } from '@ant-design/icons'; 
 import { GenericModel } from "../components/GenericModel";
 
 
-//const {Title , Paragraph } = Typography;
 
 
 export const ClassesPage = () => {
 
     const navigate = useNavigate();
-    const [form] = Form.useForm(); //יצירת אוביקט של טופס
+    const [form] = Form.useForm(); 
 
     const { data: classes, isLoading , isError , refetch} = useGetAllClassesQuery();
     const [addClass, { isLoading: isAdding }] = useCreateClassMutation();
     const [updateClass, { isLoading: isUpdating }] = useUpdateClassMutation();
 
-        //במקרה של שגיאה
     if(isError)
         return(
             <Alert
@@ -38,19 +36,13 @@ export const ClassesPage = () => {
     );
 
 
-    //סטייט לניהול הדיאלוג
     const [isModelOpen, setIsModelOpen] = useState(false);
     const [editingClass, setEitingClass] = useState<ClassModel | null>(null);
 
 
-    //     שם הכיתה	שם מזהה של הכיתה
-    // שכבה	השכבה אליה משתייכת הכיתה
-    // מחנכת הכיתה	שם המחנכת האחראית
-    // מספר תלמידים	כמות התלמידים הרשומים בכיתה
 
     const columns =
         [
-            //פה אנחנו נגדיר את העמודות שיהיו בטבלה 
 
             {
                 title: 'שם הכיתה',
@@ -78,13 +70,11 @@ export const ClassesPage = () => {
             {
                 title: 'פעולות',
                 key: 'actions',
-                //מיועד להצגת משהו שהוא לא טקסט render 
-                //לבדוק שוב על ההבדל בין unknown ל any 
                 render: (_: unknown, record: ClassModel) => (
                     <Button
                         type="link"
                         icon={<EditOutlined />}
-                        onClick={(e) => openToUpdate(record, e)} //מעבירים לפונקית העדכון את הרשומה שצריך לעדכן ואת ארוע הלחיצה
+                        onClick={(e) => openToUpdate(record, e)}
                         style={{color: '#222c65'}}
                     >
                         עריכה
@@ -96,50 +86,36 @@ export const ClassesPage = () => {
 
         ]
 
-    //פונקציות של הדיאלוג
-
-    //פונקציה לפתיחת הדיאלוג להוספת כיתה חדשה
     const openToCreate = () => {
-        setEitingClass(null); //שמים בסטייט null שזה אומר אנחנו לא בעריכה של כיתה קיימת
-        form.resetFields(); //מנקים את כל התיבות טקסט
-        setIsModelOpen(true); //פתיחת הדיאלוג
+        setEitingClass(null); 
+        form.resetFields();
+        setIsModelOpen(true); 
     };
 
-    //פונקציה לפתיחת הדיאלוג לעריכת כיתה קיימת 
-    //e:React.MouseEvent - מגדיר ארוע לחיצת עכבר 
     const openToUpdate = (record: ClassModel, e: React.MouseEvent) => {
-        e.stopPropagation();//למרות שהיתה לחיצה על שורה אומרים לו כאן לא לעבור לעמוד התלמידים
-        setEitingClass(record);//שמירת הכיתה
-        form.setFieldsValue(record); //ממלאים את השדות שבטופס בנתוניפ הקיימים של הכיתה
-        setIsModelOpen(true); //פתיחת הדיאלוג
+        e.stopPropagation();
+        setEitingClass(record);
+        form.setFieldsValue(record); 
+        setIsModelOpen(true); 
     };
 
-    //פונקציה לשמירה
-    //למה זה async וכל השאר לא ?
-    //הפונקציה נזאת עושה פעולות שהם לא מידיות ולכן צריך לחכןת לשרת 
     const submit = async () => {
 
         try {
-            //בדיקה שהשדות תקינים 
-            //איפה קוראת הבדיקה הזאת ?
-            //בהגדרות של הFORM שניצור
             const values = await form.validateFields();
 
-            if (editingClass)//אם אנחנו בעריכה
+            if (editingClass)
             {
-                //unwrap - מביא את התשובה האמיתית מהשרת או זורק שגיאה במקרה הצורך
                 await updateClass({ id: editingClass.id, data: values }).unwrap();
-                //מוסיפים הודעת הצלחה
                 message.success('הכיתה עודכנה בהצלחה !');
             }
 
-            else //הוספה
+            else 
             {
                 await addClass(values).unwrap();
                 message.success('הכיתה נוספה בהצלחה !');
             }
 
-            //ניקוי הטופס וסגירת המודל
             setIsModelOpen(false);
             form.resetFields();
         }
@@ -152,7 +128,7 @@ export const ClassesPage = () => {
 
     return (
         <>
-            <GenericTable<ClassModel> //שימוש בטבלה שיצרנו
+            <GenericTable<ClassModel> 
                 title="ניהול כיתות"
                 columns={columns}
                 data={classes}
@@ -161,7 +137,6 @@ export const ClassesPage = () => {
                 onRowClick={
                     (selectedClass) => navigate(`/classes/${selectedClass.id}/students`)
                 }
-                //משתמשים בextra להוספת כפתור של הוספת כיתה חדשה 
                 extra={
                     <Button type="primary" icon={<PlusOutlined />} onClick={openToCreate}>
                         הוספת כיתה חדשה
@@ -169,7 +144,6 @@ export const ClassesPage = () => {
                 }
             />
 
-            {/* //שימוש בדיאלוג שיצרנו */}
             <GenericModel
                 isOpen={isModelOpen}
                 title={editingClass ? 'עריכת כיתה' : 'הוספת כיתה חדשה'}
@@ -177,15 +151,12 @@ export const ClassesPage = () => {
                 onSubmit={submit}
                 isLoading={isAdding || isUpdating}
             >
-                {/* //פה מכניסים את הטופס  */}
                 <Form form={form} layout="vertical">
-                    {/* //Form.Item  - תגית בתוך הטופס */}
                     <Form.Item
                         name="name"
                         label="שם הכיתה"
                         rules={[{ required: true, message: 'נא להזין שם כיתה' }]}
                     >
-                        {/* הוספת תיבת טקסט */}
                         <Input />
                     </Form.Item>
 

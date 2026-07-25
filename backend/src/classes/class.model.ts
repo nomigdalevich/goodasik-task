@@ -1,7 +1,6 @@
-//פה אנחנו מגידירם איך נראית כיתה במערכת שלנו
 export interface classModel
 {
-  id: number; //המערכת מנפיקה
+  id: number; 
   name: string;
   grade: string;
   homeroomTeacher: string;

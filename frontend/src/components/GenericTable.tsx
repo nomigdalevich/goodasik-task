@@ -4,19 +4,17 @@ import type { ColumnsType } from 'antd/es/table';
 
 const { Title } = Typography;
 
-//פה אנחנו מחליטים על מבנה הטבלה הג'ינירית
 export interface GenericTableProps<T> 
 {
-    title:string ; //כותרת
-    columns:ColumnsType<T>; //העמודות , לפי הסוג T 
-    data: T[] | undefined; //המערך של הנתונים שמגיע מהשרת
-    isLoading: boolean; //האם הנתונים בטעינה
-    rowKey: keyof T | ((row : T)=> string | number); //המפתח היחודי של השורה
-    onRowClick?:(row: T) => void; //פונקצית לחיצה על שורה - אופציונלי
-    extra?: React.ReactNode; //אפשרות למשהו נוסף כמו כפתור או אלמנט
+    title:string ; 
+    columns:ColumnsType<T>; 
+    data: T[] | undefined; 
+    isLoading: boolean; 
+    rowKey: keyof T | ((row : T)=> string | number); 
+    onRowClick?:(row: T) => void; 
+    extra?: React.ReactNode; 
 }
 
-//הפוקנציה שמחזירה את הדברים שבפועל יהיו על המסך
 export function GenericTable<T> ({
     title , columns , data , isLoading , rowKey , onRowClick , extra ,
 }: GenericTableProps<T>)
@@ -28,17 +26,14 @@ export function GenericTable<T> ({
             style={{marginBottom:24}}
 
         >
-            {/* //פה באה הטבלה בעצמה */}
             <Table<T>
                 dataSource = {data}
                 columns={columns}
                 loading={isLoading}
                 rowKey={rowKey as string}
-                //onRow - פונקציה שמקבלת נתונים של שורה ספציפית
-                //  ומחזירה אוביקט של ארועים ועיצובים שיחולו על אותה שורה
                 onRow={(row) => ({
-                    onClick: () => onRowClick && onRowClick(row), //במקרה של לחיצה נעביר לפונקית הלחיצה את השורה שנלחצנ
-                    style: {cursor: onRowClick ? 'pointer' : 'default'} //פה אנחנו מגדירים שאם העברנו פונקציה של לחיצה הסמן של העכבר יהפוך לסמן של יד ואם לא זה ישאר רגיל
+                    onClick: () => onRowClick && onRowClick(row), 
+                    style: {cursor: onRowClick ? 'pointer' : 'default'} 
                 })}
                 locale={{
                     emptyText:'לא נמצאו נתונים להצגה'

@@ -1,13 +1,12 @@
 import { Modal } from "antd";
 
-//פה אנחנו מגדירים את המודל שלנו מה הוא יכיל
 export interface GenericModelProps {
-    isOpen:boolean; //פרמטר שיבדוק האם החלון פתוח או סגור
-    title:string; //כותרת הדיאלוג הקופץ
-    onClose: ()=> void;//תיהיה פונקציה שהיא אחראית לסגירת הדיאלוג
-    onSubmit: ()=> void; //פונקציה ששומרת נתןנים
-    isLoading?: boolean; //פרמטר שבודק האם הטופס בטעינה
-    children?: React.ReactNode;//להשאיר מקום לעוד נתונים
+    isOpen:boolean; 
+    title:string; 
+    onClose: ()=> void;
+    onSubmit: ()=> void;
+    isLoading?: boolean; 
+    children?: React.ReactNode;
 }
 
 export const GenericModel: React.FC<GenericModelProps> = ({
@@ -24,7 +23,6 @@ export const GenericModel: React.FC<GenericModelProps> = ({
             okText="אישור"
             cancelText="ביטול"
         >
-            {/* התכולה פה */}
             {children}
         </Modal>
     )

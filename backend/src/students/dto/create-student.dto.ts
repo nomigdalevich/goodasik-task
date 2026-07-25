@@ -2,7 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from "class-validator";
 import { StudentStatus } from "../student.model";
 
-//פה אנחנו מגדירים איך הלקוח יוצר כיתה במערכת 
 export class CreateStudentDto 
 {
   @ApiProperty({ example: 3, description: 'מספר הכיתה אליה התלמיד משויך' })
@@ -14,8 +13,8 @@ export class CreateStudentDto
   @IsString({ message: 'תעודת זהות חייבת להיות מחרוזת' })
   @MinLength(9, { message: 'תעודת זהות חייבת להכיל 9 ספרות' })
   @MaxLength(9, { message: 'תעודת זהות חייבת להכיל 9 ספרות' })
-  identityNumber!: string; //שדה חובה 
-
+  identityNumber!: string; 
+  
   @ApiProperty({ example: 'ישראל', description: 'שם פרטי' })
   @IsNotEmpty({ message: 'שם פרטי הוא שדה חובה' })
   @IsString({ message: 'שם פרטי חייב להיות מחרוזת' })

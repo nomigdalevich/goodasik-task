@@ -12,12 +12,10 @@ function App() {
       theme={{
         token: {
           colorPrimary: '#222c65',
-          borderRadius: 8, // פינות מעט מעוגלות ומודרניות
+          borderRadius: 8, 
         },
-        components: { //הגדרת עיצוב לקומפוננטות השונות
+        components: { 
           Button: {
-            // lineWidth: 0,
-           // הגדרת הצללה עדינה ונקייה ישירות לכפתורים הראשיים
             primaryShadow: '0 4px 4px rgba(31, 39, 87, 0.25)',
 
           },
@@ -26,9 +24,7 @@ function App() {
     >
       <BrowserRouter>
         <Routes>
-          {/* הגדרת ה-Layout הראשי כמעטפת */}
           <Route path="/" element={<MainLayout />}>
-            {/* ברירת מחדל: הפניה ל-about */}
             <Route index element={<Navigate to="/about" replace />} />
             
             <Route path="classes" element={<ClassesPage/>} />

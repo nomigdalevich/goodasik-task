@@ -9,7 +9,6 @@ export const MainLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // הגדרת פריטי התפריט
   const menuItems = [
     {
       key: '/about',
@@ -32,11 +31,10 @@ export const MainLayout = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 24px',
-          backgroundColor: '#222c65', // צבע הרקע של ה-Header
+          backgroundColor: '#222c65', 
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          {/* לוגו / כותרת האפליקציה */}
           <Title
             level={4}
             style={{ color: '#ffffff', margin: 0, cursor: 'pointer' }}
@@ -45,7 +43,6 @@ export const MainLayout = () => {
             מערכת לניהול כיתות
           </Title>
 
-          {/* תפריט ניווט */}
           <Menu
             theme="dark"
             mode="horizontal"
@@ -61,12 +58,10 @@ export const MainLayout = () => {
         </div>
       </Header>
 
-      {/* תוכן העמוד הראשי */}
       <Content style={{ padding: '24px', backgroundColor: '#f5f5f5' }}>
         <Outlet />
       </Content>
 
-      {/* פוטר */}
       <Footer style={{ textAlign: 'center', color: '#8c8c8c' }}>
         מערכת לניהול כיתות ©{new Date().getFullYear()}
       </Footer>

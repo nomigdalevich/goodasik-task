@@ -1,15 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
 
-//הקובץ הזה מגדיר מה השרת מקבל מהלקוח כאשר הוא יוצר כיתה חדשה
 export class CreateClassDto 
 {
   @ApiProperty({ example: 'כיתה א1', description: 'שם הכיתה (המזהה)' })
   @IsNotEmpty({ message: 'שם הכיתה הוא שדה חובה' })
   @MinLength(2, { message: 'שם הכיתה חייב להכיל לפחות 2 תווים' })
   @IsString({ message: 'שם הכיתה חייב להיות מחרוזת' })
-  name!: string; //בגלל שהשדה הזה לא מאותחל בבנאי,
-  // אנחנו מסמנים אותו כ-! כדי להבטיח שהטיפוס שלו לא יהיה undefined
+  name!: string; 
 
   @ApiProperty({ example: 'א', description: 'שכבה' })
   @IsNotEmpty({ message: 'שכבה היא שדה חובה' })

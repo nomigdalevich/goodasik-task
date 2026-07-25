@@ -18,9 +18,6 @@ export const AboutPage = () => {
             <Divider />
 
             <Title level={4}>טכנולוגיות בשימוש:</Title>
-
-            {/* Paragraph - פסקת טקסט */}
-            {/* strong - מדגיש בבולד */}
             <Paragraph> 
                 <strong>Frontend:</strong> React, TypeScript, Redux Toolkit Query (RTK Query), Ant Design, React Router
             </Paragraph>
