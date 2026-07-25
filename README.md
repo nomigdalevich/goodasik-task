@@ -36,22 +36,28 @@
 cd backend
 npm install
 npm run start:dev
+```
 
 השרת יעלה כברירת מחדל בכתובת: http://localhost:3000
 
 
 ### 2. הרצת ה-Frontend (Client)
 
-
+```bash
 cd frontend
 npm install
 npm run dev
+```
 
 הלקוח יעלה כברירת מחדל בכתובת: http://localhost:5173
 
 ### 3. הרצת בדיקות יחידה (Unit Tests)
+
+```bash
 cd backend
 npm run test
+```
+
 בדיקות היחידה נכתבו בעזרת Jest עבור ה-ClassesService בשרת, ומוודאות את אתחול הסרוויס ושליפת הנתונים בצורה מבודדת ותקינה.
 
 ---
@@ -74,7 +80,7 @@ npm run test
     │   ├── types/            # הגדרות Type-Safety
     │   └── App.tsx           # הגדרת ראוטינג ו-ConfigProvider מרכזי
     └── package.json
-
+```
 ---
 
 ## 🧠 החלטות מרכזיות שהתקבלו במהלך הפיתוח
